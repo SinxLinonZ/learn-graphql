@@ -7,7 +7,11 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [allUsers, setAllUsers] = useState([]);
   const [user, setUser] = useState(null);
+  const [createUserResult, setCreateUserResult] = useState(null);
+
   const [userId, setUserId] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   const listUsers = gql`{
     listUsers {
@@ -25,13 +29,20 @@ export default function Home() {
     }
   }`;
 
+  const createUser = `mutation {
+    createUser(name: "{name}", email: "{email}") {
+      id
+      name
+      email
+    }
+  }`;
+
   const client = new ApolloClient({
     link: new HttpLink({ uri: "http://localhost:3000/graphql" }),
     cache: new InMemoryCache(),
   });
 
-
-  useEffect(() => {
+  function handleGetAllUsers() {
     client
       .query({
         query: listUsers,
@@ -39,8 +50,7 @@ export default function Home() {
       .then((result) => {
         setAllUsers(result.data.listUsers);
       });
-
-  }, []);
+  }
 
   function handleGetUser() {
     client
@@ -52,6 +62,16 @@ export default function Home() {
       });
   }
 
+  function handleCreateUser() {
+    client
+      .mutate({
+        mutation: gql(createUser.replace("{name}", name).replace("{email}", email)),
+      })
+      .then((result) => {
+        setCreateUserResult(result.data.createUser);
+      });
+  }
+
   return (
     <ApolloProvider client={client}>
       <div className="p-4">
@@ -59,14 +79,25 @@ export default function Home() {
         <hr className="mb-4" />
 
         <p>User list</p>
+        <button className="bg-green-800 px-2" onClick={handleGetAllUsers}>Get All Users</button>
         <pre className="p-4 rounded border m-4">{JSON.stringify(allUsers, null, 2)}</pre>
 
         <hr className="my-4" />
 
         <p>Get user by id</p>
-        <input className="border" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} />
+        <input className="border px-2 w-15" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} />
         <button className="bg-green-800 px-2 mx-2" onClick={handleGetUser}>Get User</button>
         <pre className="p-4 rounded border m-4">{JSON.stringify(user, null, 2)}</pre>
+
+        <hr className="my-4" />
+
+        <p>Create user</p>
+        <input className="border px-2" type="text" placeholder="name" value={name} onChange={(e) => setName(e.target.value)} />
+        <input className="border px-2 mx-2" type="text" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <button className="bg-green-800 px-2" onClick={handleCreateUser}>Create User</button>
+        <pre className="p-4 rounded border m-4">{JSON.stringify(createUserResult, null, 2)}</pre>
+
+
       </div>
     </ApolloProvider>
   );

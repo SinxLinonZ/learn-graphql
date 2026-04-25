@@ -1,4 +1,4 @@
-import { Args, Resolver, Query } from '@nestjs/graphql';
+import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
 
 const users = [
   {
@@ -25,5 +25,16 @@ export class UsersResolver {
   @Query('listUsers')
   listUsers() {
     return users;
+  }
+
+  @Mutation('createUser')
+  createUser(@Args('name') name: string, @Args('email') email: string) {
+    const newUser = {
+      id: users.length + 1,
+      name,
+      email,
+    };
+    users.push(newUser);
+    return newUser;
   }
 }
