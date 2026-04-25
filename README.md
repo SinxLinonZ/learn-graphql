@@ -5,6 +5,9 @@
 
 # Backend
 - NestJS
+- Apollo Server
 - GraphQL (Schema-first approach)
 
 # Frontend
+- Next.js
+- Apollo Client

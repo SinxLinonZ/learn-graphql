@@ -19,7 +19,7 @@ export class UsersResolver {
 
   @Query('getUser')
   getUser(@Args('id') id: number) {
-    return users.find((user) => user.id === id);
+    return users.find((user) => user.id == id);
   }
 
   @Query('listUsers')
