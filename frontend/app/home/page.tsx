@@ -2,7 +2,7 @@
 
 import { ApolloClient, HttpLink, InMemoryCache, gql } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Home() {
   const [allUsers, setAllUsers] = useState([]);
@@ -21,21 +21,25 @@ export default function Home() {
     }
   }`;
 
-  const getUser = `{
-    getUser(id: {id}) {
-      id
-      name
-      email
+  const getUser = gql`
+    query GetUser($id: ID!) {
+      getUser(id: $id) {
+        id
+        name
+        email
+      }
     }
-  }`;
+  `;
 
-  const createUser = `mutation {
-    createUser(name: "{name}", email: "{email}") {
-      id
-      name
-      email
+  const createUser = gql`
+    mutation CreateUser($name: String!, $email: String!) {
+      createUser(name: $name, email: $email) {
+        id
+        name
+        email
+      }
     }
-  }`;
+  `;
 
   const client = new ApolloClient({
     link: new HttpLink({ uri: "http://localhost:3000/graphql" }),
@@ -55,7 +59,8 @@ export default function Home() {
   function handleGetUser() {
     client
       .query({
-        query: gql(getUser.replace("{id}", `${userId}`)),
+        query: getUser,
+        variables: { id: parseInt(userId) },
       })
       .then((result) => {
         setUser(result.data.getUser);
@@ -65,7 +70,8 @@ export default function Home() {
   function handleCreateUser() {
     client
       .mutate({
-        mutation: gql(createUser.replace("{name}", name).replace("{email}", email)),
+        mutation: createUser,
+        variables: { name, email },
       })
       .then((result) => {
         setCreateUserResult(result.data.createUser);
