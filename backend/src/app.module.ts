@@ -5,11 +5,13 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { UserModule } from './graphql/user/user.module';
 import { DbModule } from './db/db.module';
+import { PostModule } from './graphql/post/post.module';
 
 @Module({
   imports: [
     HelloModule,
     UserModule,
+    PostModule,
     DbModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
