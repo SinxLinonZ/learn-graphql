@@ -14,6 +14,7 @@ export interface IQuery {
     getUser(id: string): Nullable<User> | Promise<Nullable<User>>;
     listUsers(): Nullable<User>[] | Promise<Nullable<User>[]>;
     getUserPosts(userId: string): Nullable<Post>[] | Promise<Nullable<Post>[]>;
+    getUserWithPosts(id: string): Nullable<UserWithPosts> | Promise<Nullable<UserWithPosts>>;
 }
 
 export interface IMutation {
@@ -26,6 +27,13 @@ export interface Post {
     userId: string;
     title: string;
     content: string;
+}
+
+export interface UserWithPosts {
+    id: string;
+    name: string;
+    email: string;
+    posts: Nullable<Post>[];
 }
 
 export interface User {

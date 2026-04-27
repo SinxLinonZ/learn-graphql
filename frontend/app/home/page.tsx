@@ -3,6 +3,8 @@
 import UserList from "../_components/user-list";
 import GetUser from "../_components/get-user";
 import CreateUser from "../_components/create-user";
+import GetUserPosts from "../_components/get-user-posts";
+import GetUserWithPosts from "../_components/get-user-with-posts";
 
 export default function Home() {
   return (
@@ -17,6 +19,12 @@ export default function Home() {
       <hr className="my-4" />
 
       <CreateUser />
+      <hr className="my-4" />
+
+      <GetUserPosts />
+      <hr className="my-4" />
+
+      <GetUserWithPosts />
     </div>
   );
 }

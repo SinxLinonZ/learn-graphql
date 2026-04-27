@@ -49,6 +49,7 @@ export class DbService {
     `);
   }
 
+  // Users
   getUsers() {
     return this.db.prepare('SELECT * FROM users').all();
   }
@@ -63,5 +64,26 @@ export class DbService {
     );
     const info = stmt.run(name, email);
     return this.getUserById(info.lastInsertRowid as number);
+  }
+
+  getPostsByUserId(userId: number) {
+    return this.db.prepare('SELECT * FROM posts WHERE userId = ?').all(userId);
+  }
+
+  // Posts
+  getPostById(id: number) {
+    return this.db.prepare('SELECT * FROM posts WHERE id = ?').get(id);
+  }
+
+  getPosts() {
+    return this.db.prepare('SELECT * FROM posts').all();
+  }
+
+  createPost(userId: number, title: string, content: string) {
+    const stmt = this.db.prepare(
+      'INSERT INTO posts (userId, title, content) VALUES (?, ?, ?)',
+    );
+    const info = stmt.run(userId, title, content);
+    return this.getPostById(info.lastInsertRowid as number);
   }
 }

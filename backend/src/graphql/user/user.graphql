@@ -2,10 +2,18 @@ type Query {
   getUser(id: ID!): User
   listUsers: [User]!
   getUserPosts(userId: ID!): [Post]!
+  getUserWithPosts(id: ID!): UserWithPosts
 }
 
 type Mutation {
   createUser(name: String!, email: String!): User
+}
+
+type UserWithPosts {
+  id: ID!
+  name: String!
+  email: String!
+  posts: [Post]!
 }
 
 type User {
