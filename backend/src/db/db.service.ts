@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import Database from 'better-sqlite3';
 import { join } from 'path';
 import { writeFileSync } from 'fs';
+import { existsSync } from 'fs';
 
 @Injectable()
 export class DbService {
@@ -9,7 +10,7 @@ export class DbService {
 
   constructor() {
     const dbPath = join(process.cwd(), 'src/db.sqlite');
-    if (!dbPath) {
+    if (!existsSync(dbPath)) {
       writeFileSync(dbPath, '');
       console.log('Database initialized at', dbPath);
     }
