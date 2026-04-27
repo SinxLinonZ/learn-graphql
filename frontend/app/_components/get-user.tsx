@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { useLazyQuery, useQuery } from "@apollo/client/react";
+import { useLazyQuery } from "@apollo/client/react";
 import { useState } from "react";
 
 const getUser = gql`
@@ -8,7 +8,7 @@ query GetUser($id: ID!) {
     id
     name
     email
-    }
+  }
 }
 `;
 
@@ -21,7 +21,7 @@ export default function GetUser() {
       <p>Get user by id</p>
       <input className="border px-2 w-15" type="text" value={userId} onChange={(e) => setUserId(e.target.value)} />
       <button className="bg-green-800 px-2 mx-2" onClick={() => {fetchUser({
-        variables: { id: parseInt(userId) }
+        variables: { id: userId }
       })}}>Get User</button>
       <pre className="p-4 rounded border m-4">{JSON.stringify(user, null, 2)}</pre>
     </>
