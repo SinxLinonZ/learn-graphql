@@ -25,9 +25,9 @@ export class UserResolver {
   }
 
   @ResolveField('posts')
-  async getUserPosts(@Args('id') userId: string) {
+  async getUserPosts(@Parent() user: { id: number }) {
     return await this.prismaService.post.findMany({
-      where: { authorId: Number(userId) },
+      where: { authorId: user.id },
     });
   }
 
