@@ -1,11 +1,11 @@
-type Query {
+extend type Query {
   getUser(id: ID!): User
   listUsers: [User]!
   getUserPosts(userId: ID!): [Post]!
   getUserWithPosts(id: ID!): UserWithPosts
 }
 
-type Mutation {
+extend type Mutation {
   createUser(name: String!, email: String!): User
 }
 

@@ -1,9 +1,9 @@
-type Query {
+extend type Query {
   getPost(id: ID!): Post
   listPosts: [Post]!
 }
 
-type Mutation {
+extend type Mutation {
   createPost(userId: ID!, title: String!, content: String!): Post
 }
 
