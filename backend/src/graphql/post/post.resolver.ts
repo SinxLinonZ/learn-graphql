@@ -1,5 +1,5 @@
 import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
-import { PrismaService } from 'src/PrismaService';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Resolver('Post')
 export class PostResolver {
