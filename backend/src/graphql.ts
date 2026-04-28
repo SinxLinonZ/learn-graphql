@@ -24,7 +24,7 @@ export interface IMutation {
 
 export interface Post {
     id: string;
-    userId: string;
+    authorId: string;
     title: string;
     content: string;
 }

@@ -1,36 +1,49 @@
 import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
-import { DbService } from 'src/db/db.service';
+import { PrismaService } from 'src/PrismaService';
 
 @Resolver('User')
 export class UserResolver {
-  constructor(private readonly dbService: DbService) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   @Query('getUser')
-  getUser(@Args('id') id: string) {
-    return this.dbService.getUserById(Number(id));
+  async getUser(@Args('id') id: string) {
+    return await this.prismaService.user.findUnique({
+      where: { id: Number(id) },
+    });
   }
 
   @Query('listUsers')
-  listUsers() {
-    return this.dbService.getUsers();
+  async listUsers() {
+    return await this.prismaService.user.findMany();
   }
 
   @Query('getUserPosts')
-  getUserPosts(@Args('userId') userId: string) {
-    return this.dbService.getPostsByUserId(Number(userId));
+  async getUserPosts(@Args('userId') userId: string) {
+    return await this.prismaService.post.findMany({
+      where: { authorId: Number(userId) },
+    });
   }
 
   @Query('getUserWithPosts')
-  getUserWithPosts(@Args('id') id: string) {
-    const user = this.dbService.getUserById(Number(id));
+  async getUserWithPosts(@Args('id') id: string) {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: Number(id) },
+    });
     if (!user) return null;
-    const posts = this.dbService.getPostsByUserId(Number(id));
+    const posts = await this.prismaService.post.findMany({
+      where: { authorId: Number(id) },
+    });
     return { ...user, posts };
   }
 
   @Mutation('createUser')
-  createUser(@Args('name') name: string, @Args('email') email: string) {
-    const newUser = this.dbService.createUser(name, email);
+  async createUser(@Args('name') name: string, @Args('email') email: string) {
+    const newUser = await this.prismaService.user.create({
+      data: {
+        name,
+        email,
+      },
+    });
     return newUser;
   }
 }

@@ -10,7 +10,7 @@ query GetUserWithPosts($id: ID!) {
     email
     posts {
       id
-      userId
+      authorId
       title
       content
     }

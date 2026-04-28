@@ -6,7 +6,7 @@ const getUserPosts = gql`
 query GetUserPosts($userId: ID!) {
     getUserPosts(userId: $userId) {
     id
-    userId
+    authorId
     title
     content
   }

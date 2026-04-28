@@ -1,27 +1,35 @@
 import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
-import { DbService } from 'src/db/db.service';
+import { PrismaService } from 'src/PrismaService';
 
 @Resolver('Post')
 export class PostResolver {
-  constructor(private readonly dbService: DbService) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   @Query('getPost')
-  getPost(@Args('id') id: string) {
-    return this.dbService.getPostById(Number(id));
+  async getPost(@Args('id') id: string) {
+    return await this.prismaService.post.findUnique({
+      where: { id: Number(id) },
+    });
   }
 
   @Query('listPosts')
-  listPosts() {
-    return this.dbService.getPosts();
+  async listPosts() {
+    return await this.prismaService.post.findMany();
   }
 
   @Mutation('createPost')
-  createPost(
+  async createPost(
     @Args('userId') userId: string,
     @Args('title') title: string,
     @Args('content') content: string,
   ) {
-    const newPost = this.dbService.createPost(Number(userId), title, content);
+    const newPost = await this.prismaService.post.create({
+      data: {
+        title,
+        content,
+        authorId: Number(userId),
+      },
+    });
     return newPost;
   }
 }

@@ -9,7 +9,7 @@ type Mutation {
 
 type Post {
   id: ID!
-  userId: ID!
+  authorId: ID!
   title: String!
   content: String!
 }
