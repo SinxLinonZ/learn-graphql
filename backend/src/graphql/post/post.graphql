@@ -1,6 +1,6 @@
 extend type Query {
-  getPost(id: ID!): Post
-  listPosts: [Post]!
+  post(id: ID!): Post
+  posts: [Post]!
 }
 
 extend type Mutation {
@@ -9,7 +9,7 @@ extend type Mutation {
 
 type Post {
   id: ID!
-  authorId: ID!
   title: String!
   content: String!
+  author: User!
 }

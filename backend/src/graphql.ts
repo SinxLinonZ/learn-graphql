@@ -9,12 +9,10 @@
 /* eslint-disable */
 
 export interface IQuery {
-    getPost(id: string): Nullable<Post> | Promise<Nullable<Post>>;
-    listPosts(): Nullable<Post>[] | Promise<Nullable<Post>[]>;
-    getUser(id: string): Nullable<User> | Promise<Nullable<User>>;
-    listUsers(): Nullable<User>[] | Promise<Nullable<User>[]>;
-    getUserPosts(userId: string): Nullable<Post>[] | Promise<Nullable<Post>[]>;
-    getUserWithPosts(id: string): Nullable<UserWithPosts> | Promise<Nullable<UserWithPosts>>;
+    post(id: string): Nullable<Post> | Promise<Nullable<Post>>;
+    posts(): Nullable<Post>[] | Promise<Nullable<Post>[]>;
+    user(id: string): Nullable<User> | Promise<Nullable<User>>;
+    users(): Nullable<User>[] | Promise<Nullable<User>[]>;
 }
 
 export interface IMutation {
@@ -24,22 +22,17 @@ export interface IMutation {
 
 export interface Post {
     id: string;
-    authorId: string;
     title: string;
     content: string;
-}
-
-export interface UserWithPosts {
-    id: string;
-    name: string;
-    email: string;
-    posts: Nullable<Post>[];
+    author: User;
 }
 
 export interface User {
     id: string;
     name: string;
     email: string;
+    emailDomain: string;
+    posts: Nullable<Post>[];
 }
 
 type Nullable<T> = T | null;

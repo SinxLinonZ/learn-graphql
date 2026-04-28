@@ -1,39 +1,39 @@
-import { Args, Resolver, Query, Mutation } from '@nestjs/graphql';
+import {
+  Args,
+  Resolver,
+  Query,
+  Mutation,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Resolver('User')
 export class UserResolver {
   constructor(private readonly prismaService: PrismaService) {}
 
-  @Query('getUser')
+  @Query('user')
   async getUser(@Args('id') id: string) {
     return await this.prismaService.user.findUnique({
       where: { id: Number(id) },
     });
   }
 
-  @Query('listUsers')
+  @Query('users')
   async listUsers() {
     return await this.prismaService.user.findMany();
   }
 
-  @Query('getUserPosts')
-  async getUserPosts(@Args('userId') userId: string) {
+  @ResolveField('posts')
+  async getUserPosts(@Args('id') userId: string) {
     return await this.prismaService.post.findMany({
       where: { authorId: Number(userId) },
     });
   }
 
-  @Query('getUserWithPosts')
-  async getUserWithPosts(@Args('id') id: string) {
-    const user = await this.prismaService.user.findUnique({
-      where: { id: Number(id) },
-    });
-    if (!user) return null;
-    const posts = await this.prismaService.post.findMany({
-      where: { authorId: Number(id) },
-    });
-    return { ...user, posts };
+  @ResolveField('emailDomain')
+  getEmailDomain(@Parent() user: { email: string }) {
+    return user.email.split('@')[1] ?? '';
   }
 
   @Mutation('createUser')

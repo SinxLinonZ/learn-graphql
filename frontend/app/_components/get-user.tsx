@@ -4,10 +4,11 @@ import { useState } from "react";
 
 const getUser = gql`
 query GetUser($id: ID!) {
-    getUser(id: $id) {
+    user(id: $id) {
     id
     name
     email
+    emailDomain
   }
 }
 `;

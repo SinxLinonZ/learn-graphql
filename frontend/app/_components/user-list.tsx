@@ -2,10 +2,11 @@ import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 
 const listUsers = gql`{
-  listUsers {
+  users {
     id
     name
     email
+    emailDomain
   }
 }`;
 
