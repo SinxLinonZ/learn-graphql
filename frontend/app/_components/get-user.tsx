@@ -1,10 +1,11 @@
+import { GetUserQuery, GetUserQueryVariables } from "@/graphql/generated/graphql";
 import { gql } from "@apollo/client";
 import { useLazyQuery } from "@apollo/client/react";
 import { useState } from "react";
 
-const getUser = gql`
+const getUserDocument = gql`
 query GetUser($id: ID!) {
-    user(id: $id) {
+  user(id: $id) {
     id
     name
     email
@@ -15,7 +16,7 @@ query GetUser($id: ID!) {
 
 export default function GetUser() {
   const [userId, setUserId] = useState("");
-  const [ fetchUser, { data: user } ] = useLazyQuery(getUser);
+  const [ fetchUser, { data: user } ] = useLazyQuery<GetUserQuery, GetUserQueryVariables>(getUserDocument);
 
   return (
     <>

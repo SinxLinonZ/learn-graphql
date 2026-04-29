@@ -1,18 +1,21 @@
-import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
+import { gql } from "@apollo/client";
+import { ListUsersQuery, ListUsersQueryVariables } from "@/graphql/generated/graphql";
 
-const listUsers = gql`{
-  users {
-    id
-    name
-    email
-    emailDomain
+const listUsersDocument = gql`
+  query ListUsers {
+    users {
+      id
+      name
+      email
+      emailDomain
+    }
   }
-}`;
+`;
 
 export default function UserList() {
 
-  const { loading: listUsersLoading, error: listUsersError, data: allUsers, refetch: refetchListUsers } = useQuery(listUsers);
+  const { loading: listUsersLoading, error: listUsersError, data: allUsers, refetch: refetchListUsers } = useQuery<ListUsersQuery, ListUsersQueryVariables>(listUsersDocument);
 
   return (
     <>

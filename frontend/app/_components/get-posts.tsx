@@ -1,8 +1,8 @@
+import { GetPostsQuery, GetPostsQueryVariables } from "@/graphql/generated/graphql";
 import { gql } from "@apollo/client";
 import { useLazyQuery } from "@apollo/client/react";
-import { useState } from "react";
 
-const getPosts = gql`
+const getPostsDocument = gql`
 query GetPosts {
   posts {
     id
@@ -19,7 +19,7 @@ query GetPosts {
 `;
 
 export default function GetPosts() {
-  const [ fetchPosts, { data: posts } ] = useLazyQuery(getPosts);
+  const [ fetchPosts, { data: posts } ] = useLazyQuery<GetPostsQuery, GetPostsQueryVariables>(getPostsDocument);
 
   return (
     <>
